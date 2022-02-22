@@ -4,10 +4,10 @@ DIR_SRCS = srcs
 DIR_HEADERS = includes
 DIR_OBJS = objs
 
-SRCS = main.cpp Server.cpp
+SRCS = main.cpp utils.cpp Server.cpp Client.cpp
 PATH_SRCS = $(addprefix $(DIR_SRCS)/, $(SRCS))
 
-HEADERS = Server.hpp
+HEADERS = Server.hpp utils.hpp Client.hpp
 PATH_HEADERS = $(addprefix $(DIR_HEADERS)/, $(HEADERS))
 
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
@@ -15,7 +15,7 @@ PATH_OBJS = $(addprefix $(DIR_OBJS)/, $(OBJS))
 
 CC = clang++
 RM = rm -rf
-FLAGS = -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98 -g
 
 GREEN = \033[0;32m
 RESET = \033[0m
