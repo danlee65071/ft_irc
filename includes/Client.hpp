@@ -21,6 +21,8 @@ enum Status
 class Client
 {
 private:
+	typedef std::vector<const Chat *>::iterator iterator;
+
 	int 						socket_fd;
 	std::string					password;
 	std::string					nick;
@@ -31,7 +33,7 @@ private:
 	time_t						time_last_mes;
 	time_t						time_ping;
 	std::queue<std::string>		messages;
-//	std::vector<const Chats*>	chats;
+	std::vector<const Chats*>	chats;
 	unsigned char				flags;
 	char						buf[BUFF_SIZE];
 	int							recv_bytes;
@@ -51,7 +53,7 @@ public:
 	const time_t& get_registration_time() const;
 	const time_t& get_time_last_mes() const;
 	const time_t& get_time_ping() const;
-//	const std::vector<const Chats*>& get_chats() const;
+	const std::vector<const Chats*>& get_chats() const;
 	const std::queue<std::string>& get_messages() const;
 	const unsigned char& get_flags() const;
 	const std::string& get_exit_msg() const;
@@ -61,11 +63,18 @@ public:
 	void set_password(const std::string& Password);
 	void set_exit_msg(const std::string& Message);
 	void set_flag(const unsigned char& flag);
-
-	void send_message(const std::string& message) const;
-	int read_message();
 private:
 	void fill_messages(const std::string& str);
+public:
+	void send_message(const std::string& message) const;
+	int read_message();
+	void delete_message();
+	void delete_flag(unsigned char flag);
+	void update_time_last_mes();
+	void update_time_ping();
+	void add_chat(const Chat& chat);
+	bool is_in_chat(const std::string& chat) const;
+	void delete_chat(const std::string& chat);
 };
 
 #endif

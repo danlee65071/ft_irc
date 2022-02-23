@@ -62,6 +62,11 @@ const std::string& Client::get_exit_msg() const
 	return exit_msg;
 }
 
+const std::vector<const Chat*>& Client::get_chats() const
+{
+	return chats;
+}
+
 void Client::set_username(const std::string &Username)
 {
 	username = Username;
@@ -134,4 +139,48 @@ int Client::read_message()
 	if (text.size() > 1)
 		fill_messages(text);
 	return 0;
+}
+
+void Client::delete_message()
+{
+	if (messages.size() > 0)
+		messages.pop();
+}
+
+void Client::delete_flag(unsigned char flag)
+{
+	flags &= ~flag;
+}
+
+void Client::update_time_last_mes()
+{
+	time_last_mes = time(0);
+}
+
+void Client::update_time_ping()
+{
+	time_ping = time(0);
+}
+
+void Client::add_chat(const Chat &chat)
+{
+	chats.push_back(&chat);
+}
+
+bool Client::is_in_chat(const std::string &chat) const
+{
+	for (size_t i = 0; i < chats.size(); i++)
+		if (chats[i]->get_name() == chat)
+			return true;
+	return false;
+}
+
+void	Client::delete_chat(const std::string &chat)
+{
+	iterator begin = chats.begin();
+	iterator end = chats.end();
+	for (; begin != end; ++begin)
+		if ((*begin)->get_name() == chat)
+			break ;
+	chats.erase(begin);
 }

@@ -4,10 +4,17 @@ DIR_SRCS = srcs
 DIR_HEADERS = includes
 DIR_OBJS = objs
 
-SRCS = main.cpp utils.cpp Server.cpp Client.cpp
+SRCS = main.cpp utils.cpp Server.cpp Client.cpp Chat.cpp Message.cpp History.cpp User_info.cpp Hash.cpp
 PATH_SRCS = $(addprefix $(DIR_SRCS)/, $(SRCS))
 
-HEADERS = Server.hpp utils.hpp Client.hpp
+HEADERS = Chat.hpp \
+          Client.hpp \
+          Hash.hpp \
+          History.hpp \
+          Message.hpp \
+          Server.hpp \
+          User_info.hpp \
+          utils.hpp
 PATH_HEADERS = $(addprefix $(DIR_HEADERS)/, $(HEADERS))
 
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
