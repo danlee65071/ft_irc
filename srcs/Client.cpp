@@ -141,6 +141,21 @@ int Client::read_message()
 	return 0;
 }
 
+void Client::set_realname(const std::string &Realname)
+{
+	real_name = Realname;
+}
+
+const std::string& Client::get_realname() const
+{
+	return real_name;
+}
+
+const std::string& Client::get_prefix() const
+{
+	return std::string(nick + "!" + username + "@" + real_name);
+}
+
 void Client::delete_message()
 {
 	if (messages.size() > 0)

@@ -3,6 +3,7 @@ NAME = ircserv
 DIR_SRCS = srcs
 DIR_HEADERS = includes
 DIR_OBJS = objs
+DIR_BOT = bot
 
 SRCS = main.cpp Chat.cpp Client.cpp Hash.cpp History.cpp Message.cpp Server.cpp UserInfo.cpp utils.cpp
 
@@ -53,8 +54,12 @@ write_logo:
 	████████████████████████████████████████████████████████████████████████████\n\
 	$(RESET)"
 
+bot:
+	@make -C $(DIR_BOT) all
+
 clean:
 	@$(RM) $(DIR_OBJS)
+	@make -C $(DIR_BOT) fclean
 	@echo "$(GREEN)clean instruction was executed$(RESET)"
 
 fclean: clean

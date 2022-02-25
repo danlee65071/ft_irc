@@ -51,7 +51,7 @@ void Chat::display_members(const Client& member)
 bool Chat::is_admin(const Client &member) const
 {
 	for (size_t i = 0; i < admins.size(); ++i)
-		if (admins[i]->get_username() == member.get_username())
+		if (admins[i]->get_prefix() == member.get_prefix())
 			return true;
 	return false;
 }
@@ -60,7 +60,7 @@ bool Chat::is_speaker(const Client &member) const
 
 {
 	for (size_t i = 0; i < speakers.size(); ++i)
-		if (speakers[i]->get_username() == member.get_username())
+		if (speakers[i]->get_prefix() == member.get_prefix())
 			return true;
 	return false;
 }
@@ -122,7 +122,7 @@ void Chat::set_flag(unsigned char flag)
 bool Chat::is_invited(const Client &member) const
 {
 	for (size_t i = 0; i < invited_members.size(); ++i)
-		if (invited_members[i]->get_username() == member.get_username())
+		if (invited_members[i]->get_username() == member.get_prefix())
 			return true;
 	return false;
 }
@@ -152,14 +152,14 @@ void	Chat::connect(const Client &member, const std::string &pass)
 	{
 		for (size_t i = 0; i < ban_masks.size(); i++)
 		{
-			if (is_member_banned(ban_masks[i], member.get_nick()))
+			if (is_member_banned(ban_masks[i], member.get_prefix()))
 			{
 				send_error(member, ERR_BANNEDFROMCHAN, name);
 				return ;
 			}
 		}
 		for (const_iterator it = members.begin(); it != members.end(); ++it)
-			if ((*it)->get_nick() == member.get_nick())
+			if ((*it)->get_prefix() == member.get_prefix())
 				return ;
 		members.push_back(&member);
 		remove_invited(member);
@@ -191,7 +191,7 @@ void	Chat::invite(const Client &member, const Client &inviter)
 	else
 	{
 		invited_members.push_back(&inviter);
-		inviter.send_message(":" + member.get_nick() + " INVITE " + name + "\n");
+		inviter.send_message(":" + member.get_prefix() + " INVITE " + name + "\n");
 		send_reply(SERVER_NAME, member, RPL_INVITING, name, inviter.get_nick());
 		if (inviter.get_flags() & AWAY)
 			send_reply(SERVER_NAME, member, RPL_AWAY, inviter.get_nick(), inviter.get_exit_msg());

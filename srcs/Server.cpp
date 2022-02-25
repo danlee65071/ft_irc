@@ -130,7 +130,7 @@ int		Server::nick_cmd(const Message &msg, Client &member)
 	{
 		if (member.get_flags() & REGISTERED)
 		{
-			notify(member, ": " + msg.get_command() + " " + msg.get_params()[0] + "\n");
+			notify(member, ":" + member.get_prefix() + " " + msg.get_command() + " " + msg.get_params()[0] + "\n");
 			history.add_user(member);
 		}
 		member.set_nick(msg.get_params()[0]);
@@ -145,7 +145,10 @@ int Server::user_cmd(const Message &msg, Client &member)
 	else if (member.get_flags() & REGISTERED)
 		send_error(member, ERR_ALREADYREGISTRED);
 	else
+	{
 		member.set_username(msg.get_params()[0]);
+		member.set_realname(msg.get_params()[3]);
+	}
 	return connect_member(member);
 }
 
@@ -225,7 +228,7 @@ int 	Server::privmsg_cmd(const Message &msg, Client &member)
 			if (msg.get_command() == "PRIVMSG" && (get_member(*it)->get_flags() & AWAY))
 				send_reply(SERVER_NAME, member, RPL_AWAY, *it, get_member(*it)->get_exit_msg());
 			if (msg.get_command() != "NOTICE" || (get_member(*it)->get_flags() & RECEIVENOTICE))
-				get_member(*it)->send_message(": " + msg.get_command() + " " + *it + " :" + msg.get_params()[1] + "\n");
+				get_member(*it)->send_message(":" + member.get_prefix() + " " + msg.get_command() + " " + *it + " :" + msg.get_params()[1] + "\n");
 		}
 	}
 	return 0;
@@ -407,7 +410,7 @@ int Server::mode_cmd(const Message &msg, Client &member)
 					send_reply(SERVER_NAME, member, RPL_UMODEIS, flags);
 				}
 				else if (handle_flags(msg, member) != -1)
-					member.send_message(": MODE " + msg.get_params()[0] + " " + msg.get_params()[1] + "\n");
+					member.send_message(":" + member.get_prefix() + "MODE " + msg.get_params()[0] + " " + msg.get_params()[1] + "\n");
 			}
 		}
 	}
@@ -614,7 +617,7 @@ int Server::wallops_cmd(const Message &msg, Client &member)
 	const std::vector<Client *> member_list = members;
 	for (size_t i = 0; i < member_list.size(); ++i)
 		if (member_list[i]->get_flags() & IRCOPERATOR)
-			member_list[i]->send_message(": " + msg.get_command() + " :" + msg.get_params()[0] + "\n");
+			member_list[i]->send_message(":" + member.get_prefix() +  " " + msg.get_command() + " :" + msg.get_params()[0] + "\n");
 	return 0;
 }
 
@@ -996,7 +999,7 @@ void Server::break_connections()
 		if (members[i]->get_flags() & BREAKCONNECTION)
 		{
 			history.add_user(*(members[i]));
-			notify(*(members[i]), ": QUIT :" + members[i]->get_exit_msg() + "\n");
+			notify(*(members[i]), ": " + members[i]->get_prefix() + "QUIT :" + members[i]->get_exit_msg() + "\n");
 			close(members[i]->get_socket());
 			for (std::map<std::string, Chat *>::iterator it = chats.begin(); it != chats.end(); ++it)
 				if ((*it).second->is_exist_member(members[i]->get_nick()))
