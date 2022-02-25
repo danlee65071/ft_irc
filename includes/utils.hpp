@@ -20,11 +20,12 @@
 # include <sys/event.h>
 # include <csignal>
 # include <sstream>
+# include "fstream"
 # include "Chat.hpp"
 # include "Client.hpp"
 # include "Message.hpp"
 # include "History.hpp"
-# include "User_info.hpp"
+# include "UserInfo.hpp"
 # include "Hash.hpp"
 
 # define RED		"\033[31m"
@@ -152,6 +153,8 @@
 #define ERR_NOOPERHOST			491
 #define ERR_UMODEUNKNOWNFLAG		501
 #define ERR_USERSDONTMATCH		502
+
+class Message;
 
 void	exit_program(const std::string &error_msg);
 int		check_input_params(int argc, char** argv);

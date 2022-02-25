@@ -1,5 +1,5 @@
-#ifndef FT_IRC_USER_INFO_HPP
-#define FT_IRC_USER_INFO_HPP
+#ifndef FT_IRC_USERINFO_HPP
+#define FT_IRC_USERINFO_HPP
 
 # include "utils.hpp"
 
@@ -17,7 +17,7 @@ private:
 
 public:
 	UserInfo(const Client &user);
-	~UserInfo();
+	~UserInfo() {}
 
 	const std::string				&get_nick() const;
 	const std::string				&get_username() const;

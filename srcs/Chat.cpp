@@ -37,9 +37,9 @@ void Chat::display_members(const Client& member)
 	{
 		user = *it_begin;
 		if (is_admin(*user))
-			members_nicks += "\'admin\'";
+			members_nicks += "@";
 		else if (is_speaker(*user))
-			members_nicks += "\'speaker\'";
+			members_nicks += "+";
 		members_nicks += user->get_nick();
 		++it_begin;
 		if (it_begin != it_end)

@@ -22,7 +22,7 @@ const std::vector<const UserInfo *>	History::get_history(const std::string &nick
 
 	for (size_t i = 0; i < history_list.size(); ++i)
 	{
-		if (history_list[i]->getNickname() == nickname)
+		if (history_list[i]->get_nick() == nickname)
 			filtered_history.push_back(history_list[i]);
 	}
 	return filtered_history;

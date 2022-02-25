@@ -3,15 +3,14 @@
 
 # include "utils.hpp"
 
-enum Chat_privileges
-{
-	PRIVATE = 1,
-	SECRET,
-	MODERATED,
-	INVITEONLY,
-	TOPICSET,
-	NOMSGOUT
-};
+class Client;
+
+#define PRIVATE		0b000001
+#define SECRET		0b000010
+#define MODERATED	0b000100
+#define INVITEONLY	0b001000
+#define TOPICSET		0b010000
+#define NOMSGOUT		0b100000
 
 class Chat
 {
@@ -26,7 +25,7 @@ private:
 	std::vector<const Client*>		invited_members;
 	std::vector<std::string>		ban_masks;
 	std::string						password;
-	int								client_limit;
+	unsigned int					client_limit;
 	unsigned char					flags;
 
 	Chat();
@@ -70,8 +69,6 @@ public:
 	void disconnect(const Client &member);
 	void member_chat_info(const Client &member);
 	std::string str_flags() const;
-
-	Chat(const std::string basicString, const Client client, const std::string basicString1);
 };
 
 #endif

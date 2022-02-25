@@ -6,17 +6,16 @@
 # define BUFF_SIZE 100
 # define TEXT_LEN 512
 
-enum Status
-{
-	REGISTERED = 1,
-	INVISIBLE,
-	RECEIVENOTICE,
-	RECEIVEWALLOPS,
-	IRCOPERATOR,
-	AWAY,
-	PINGING,
-	BREAKCONNECTION
-};
+class Chat;
+
+#define REGISTERED		0b00000001
+#define INVISIBLE		0b00000010
+#define RECEIVENOTICE	0b00000100
+#define RECEIVEWALLOPS	0b00001000
+#define IRCOPERATOR		0b00010000
+#define AWAY				0b00100000
+#define PINGING			0b01000000
+#define BREAKCONNECTION	0b10000000
 
 class Client
 {
@@ -33,7 +32,7 @@ private:
 	time_t						time_last_mes;
 	time_t						time_ping;
 	std::queue<std::string>		messages;
-	std::vector<const Chats*>	chats;
+	std::vector<const Chat*>	chats;
 	unsigned char				flags;
 	char						buf[BUFF_SIZE];
 	int							recv_bytes;
@@ -53,7 +52,7 @@ public:
 	const time_t& get_registration_time() const;
 	const time_t& get_time_last_mes() const;
 	const time_t& get_time_ping() const;
-	const std::vector<const Chats*>& get_chats() const;
+	const std::vector<const Chat*>& get_chats() const;
 	const std::queue<std::string>& get_messages() const;
 	const unsigned char& get_flags() const;
 	const std::string& get_exit_msg() const;

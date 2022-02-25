@@ -3,6 +3,8 @@
 
 # include "utils.hpp"
 
+class UserInfo;
+
 class History
 {
 private:

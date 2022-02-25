@@ -4,17 +4,12 @@ DIR_SRCS = srcs
 DIR_HEADERS = includes
 DIR_OBJS = objs
 
-SRCS = main.cpp utils.cpp Server.cpp Client.cpp Chat.cpp Message.cpp History.cpp User_info.cpp Hash.cpp
+SRCS = main.cpp Chat.cpp Client.cpp Hash.cpp History.cpp Message.cpp Server.cpp UserInfo.cpp utils.cpp
+
 PATH_SRCS = $(addprefix $(DIR_SRCS)/, $(SRCS))
 
-HEADERS = Chat.hpp \
-          Client.hpp \
-          Hash.hpp \
-          History.hpp \
-          Message.hpp \
-          Server.hpp \
-          User_info.hpp \
-          utils.hpp
+HEADERS = Chat.hpp Client.hpp Hash.hpp History.hpp Message.hpp Server.hpp UserInfo.hpp utils.hpp
+
 PATH_HEADERS = $(addprefix $(DIR_HEADERS)/, $(HEADERS))
 
 OBJS = $(patsubst %.cpp, %.o, $(SRCS))
@@ -31,8 +26,12 @@ all: $(NAME)
 
 $(NAME): mkdir_obj write_logo $(PATH_OBJS)
 	@echo "$(GREEN)\nObjects were created $(RESET)"
-	@$(CC) $(FLAGS) -I $(DIR_HEADERS) $(PATH_OBJS) -o $@
-	@echo "$(GREEN)\nft_containers was compiled $(RESET)"
+	@$(CC) $(FLAGS) $(PATH_OBJS) -o $@
+	@echo "$(GREEN)\nft_irc was compiled $(RESET)"
+
+$(DIR_OBJS)/%.o: $(DIR_SRCS)/%.cpp $(PATH_HEADERS) Makefile
+	@$(CC) $(FLAGS) -I $(DIR_HEADERS) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
 
 mkdir_obj:
 	@mkdir -p $(DIR_OBJS)
@@ -53,10 +52,6 @@ write_logo:
 	█░░░░░░█████████████░░░░░░█████░░░░░░░░░░█░░░░░░██░░░░░░░░░░█░░░░░░░░░░░░░░█\n\
 	████████████████████████████████████████████████████████████████████████████\n\
 	$(RESET)"
-
-$(DIR_OBJS)/%.o: $(DIR_SRCS)/%.cpp $(PATH_HEADERS) Makefile
-	@$(CC) $(FLAGS) -I $(DIR_HEADERS) -c $< -o $@
-	@echo "$(GREEN).$(RESET)\c"
 
 clean:
 	@$(RM) $(DIR_OBJS)

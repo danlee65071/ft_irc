@@ -1,4 +1,4 @@
-#include "User_info.hpp"
+#include "UserInfo.hpp"
 
 UserInfo::UserInfo(const Client &member) :
 		nickname(member.get_nick()), username(member.get_username()), hostname(member.get_host()), registration_time(time(0))

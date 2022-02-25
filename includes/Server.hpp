@@ -8,7 +8,7 @@
 class Server
 {
 	private:
-		typedef int (Server::*irc_methods)();
+		typedef int (Server::*irc_methods)(const Message &, Client &);
 
 		int 									port;
 		std::string 							password;
@@ -19,7 +19,6 @@ class Server
 		int										client_fd;
 		sockaddr_in								addr;
 		socklen_t								addr_len;
-		struct pollfd							poll_fd;
 		std::vector<struct pollfd>				client_fds;
 		char*									host_ip;
 
@@ -43,6 +42,9 @@ class Server
 		void listen_socket();
 		void accept_socket();
 		void poll_socket();
+		void connect_members();
+		void break_connections();
+		void delete_empty_chats();
 	public:
 		void start_server();
 	private:
@@ -56,6 +58,8 @@ class Server
 		bool is_correct_chat(const std::string& name);
 		int connect_to_chat(const Client& member, const std::string& name, const std::string& password);
 		void invite_to_chat(const Client& member, const std::string& nick, const std::string& chat_name);
+		void init_cmds();
+		void parse_motd();
 	public:
 		int handle_mes(Client& member);
 
@@ -82,7 +86,7 @@ class Server
 		int ping_cmd(const Message &msg, Client &member);
 		int pong_cmd(const Message &msg, Client &member);
 		int ison_cmd(const Message &msg, Client &member);
-		int userthost_cmd(const Message &msg, Client &member);
+		int userhost_cmd(const Message &msg, Client &member);
 		int version_cmd(const Message &msg, Client &member);
 		int info_cmd(const Message &msg, Client &member);
 		int admin_cmd(const Message &msg, Client &member);
