@@ -55,7 +55,7 @@ write_logo:
 	$(RESET)"
 
 bot:
-	@make -C $(DIR_BOT) all
+	@make -C $(DIR_BOT)
 
 clean:
 	@$(RM) $(DIR_OBJS)
@@ -68,4 +68,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all logo clean fclean re mkdir_obj write_logo
+.PHONY: all logo clean fclean re mkdir_obj write_logo bot

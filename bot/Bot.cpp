@@ -12,7 +12,9 @@ Bot::Bot(int Port, const std::string& Password): bot_name(BOT_NAME), port(Port),
 }
 
 Bot::~Bot()
-{}
+{
+	close(socket_bot);
+}
 
 void Bot::socket_init()
 {
@@ -34,6 +36,8 @@ void Bot::send_message(const std::string& message)
 
 void Bot::recv_socket()
 {
+	memset(recv_buf, 0, BUFF_SIZE);
+	request = "";
 	while ((recv_bytes = recv(socket_bot, recv_buf, BUFF_SIZE - 1, 0)) > 0)
 	{
 		recv_buf[recv_bytes] = '\0';
@@ -46,7 +50,7 @@ void Bot::bot_login()
 	std::string login[3];
 
 	login[0] = "PASS " + server_password + "\n";
-	login[1] = "USER " + bot_name + "\n";
+	login[1] = "USER " + bot_name + " 127.0.0.1" + " ft_irc" + " " + bot_nick + "\n";
 	login[2] = "NICK " + bot_nick + "\n";
 	for (int i = 0; i < 3; ++i)
 		send_message(login[i]);
@@ -70,6 +74,8 @@ void Bot::process_request()
 {
 	static std::string buf = "";
 
+	while (!request_queue.empty())
+		request_queue.pop();
 	get_request_queue(buf + request);
 	while (request_queue.size() > 0)
 	{
@@ -78,10 +84,12 @@ void Bot::process_request()
 			Request req(request_queue.front());
 			if (req.get_command() == "PRIVMSG")
 			{
-				for (std::vector<std::string>::const_iterator it = req.get_params().begin(); it != req.get_params().end(); ++it)
+				content = "";
+				for (std::vector<std::string>::const_iterator it = req.get_params().begin() + 1; it != req.get_params().end(); ++it)
 					content += upper_str(*it);
 				sender = ::get_sender(req.get_prefix());
 				send_message("PRIVMSG " + sender + " :" + content + "\n");
+				std::cout << "PRIVMSG " + sender + " :" + content + "\n";
 			}
 			else if (req.get_command() == "PING")
 				send_message("PONG :" + req.get_params()[1]);
@@ -105,12 +113,13 @@ void Bot::get_request_queue(const std::string& req)
 
 	while (it != req.end())
 	{
-		while (it != req.end() && *it != '\n')
+		while (it != req.end() && *it == '\n')
 			++it;
 		slash_n_it = std::find(it, req.end(), '\n');
-		if (slash_n_it != req.end())
+		if (it != req.end())
 		{
 			request_queue.push(std::string(it, slash_n_it + 1));
+			std::cout << std::string(it, slash_n_it + 1) << std::endl;
 			it = slash_n_it;
 		}
 	}

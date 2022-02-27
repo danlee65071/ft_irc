@@ -19,7 +19,7 @@ void Request::get_params_queue()
 
 	while(it != request.end())
 	{
-		while(it != request.end() && *it != ' ')
+		while(it != request.end() && *it == ' ')
 			++it;
 		space_it = std::find(it, request.end(), ' ');
 		if (it != request.end())

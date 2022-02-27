@@ -151,7 +151,7 @@ const std::string& Client::get_realname() const
 	return real_name;
 }
 
-const std::string& Client::get_prefix() const
+std::string Client::get_prefix() const
 {
 	return std::string(nick + "!" + username + "@" + real_name);
 }

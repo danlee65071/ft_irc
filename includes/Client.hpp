@@ -58,7 +58,7 @@ public:
 	const std::queue<std::string>& get_messages() const;
 	const unsigned char& get_flags() const;
 	const std::string& get_exit_msg() const;
-	const std::string& get_prefix() const;
+	std::string get_prefix() const;
 
 	void set_username(const std::string& Username);
 	void set_nick(const std::string& Nick);

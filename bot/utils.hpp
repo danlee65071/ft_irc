@@ -29,7 +29,7 @@
 # define YELLOW	"\033[33m"
 # define RESET	"\033[0m"
 
-# define BOT_NAME "irc_bot"
+# define BOT_NAME "ircbot"
 # define SERVER_NAME "ft_irc"
 # define BUFF_SIZE 1024
 
